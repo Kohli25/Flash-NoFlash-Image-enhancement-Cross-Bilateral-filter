@@ -73,24 +73,25 @@ def solution(image_path_a, image_path_b):
     path1=image_path_a
     path2=image_path_b
 
-    input_image = cv2.imread(path1) / 255.0  # Normalize to [0, 1]
+    input_image1 = cv2.imread(path1) / 255.0  # Normalize to [0, 1]
     input_image2 = cv2.imread(path2) / 255.0  # Normalize to [0, 1]
 
-    image_N = np.copy(input_image)
+    image_N = np.copy(input_image1)
     image_F = np.copy(input_image2)
     # result = joint_bil_2_color(image_N, image_F, w=11, sigma=(3, 0.1))
     sigma1=3
     sigma2=0.2
     w=11
-
+    print("Calculating Base Image....")
     A_base= joint_bil_2_color(image_N, image_N, w=11, sigma=(3, 0.2))   
-
+    print("calculating Image_NR(Noice reduced version of Image by BLF)....")
     A_nr=joint_bil_2_color(image_N, image_F, w=11, sigma=(3, 0.1))
+    print("Calculating Flash Image Base.....")
 
     F_base=joint_bil_2_color(image_F, image_F, w=11, sigma=(3, 0.1))    
 
     eps = 0.02
-
+    print("Almost Done....!!")
     F_detail=(image_F.astype(np.float64) + eps) / (F_base.astype(np.float64) + eps)    
 
 
@@ -138,4 +139,31 @@ def solution(image_path_a, image_path_b):
 
     
     return out
+
+#path_to_no_flash_image=('local/image_nf.png')
+#path_to_no_flash_image=('local/image_f.png')
+
+#Clear_image=solution(path_to_no_flash_image,path_to_no_flash_image)
+
+# Convert images from BGR to RGB format
+#origional_image=cv2.imread(path_to_no_flash_image)
+# image1_rgb = cv2.cvtColor(Clear_image, cv2.COLOR_BGR2RGB)
+# image2_rgb = cv2.cvtColor(origional_image, cv2.COLOR_BGR2RGB)
+
+# # Create a figure with two subplots
+# fig, axs = plt.subplots(1, 2, figsize=(10, 5))
+
+# # Display the first image with a title
+# axs[0].imshow(image1_rgb)
+# axs[0].set_title('BL Filtered Image')
+# axs[0].axis('off')  # Hide the axis
+
+# # Display the second image with a title
+# axs[1].imshow(image2_rgb)
+# axs[1].set_title('Origional Image')
+# axs[1].axis('off')  # Hide the axis
+
+# # Display the images
+# plt.show()
+
     
