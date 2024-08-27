@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.gridspec import GridSpec
 
 def joint_bilt_filter(D, C, w=3, sigma=(3, 0.1)):
     """
@@ -180,15 +181,15 @@ def solution(image_path_a, image_path_b):
     return out
 
 # # Example usage:
-# path_to_no_flash_image = '2_a.jpg'
-# path_to_flash_image = '2_b.jpg'
+# path_to_no_flash_image = '4_a.jpg'
+# path_to_flash_image = '4_b.jpg'
 
 # Clear_image = solution(path_to_no_flash_image, path_to_flash_image)
 
 # # Convert Clear_image to uint8 format (range [0, 255])
 # Clear_image_uint8 = (Clear_image * 255).astype(np.uint8)
 
-# # Read the original image
+# # Read the original images
 # original_flash_image = cv2.imread(path_to_no_flash_image)
 # original_noflash_image = cv2.imread(path_to_flash_image)
 
@@ -197,22 +198,26 @@ def solution(image_path_a, image_path_b):
 # image2_rgb = cv2.cvtColor(original_flash_image, cv2.COLOR_BGR2RGB)
 # image3_rgb = cv2.cvtColor(original_noflash_image, cv2.COLOR_BGR2RGB)
 
-# # Create a figure with two subplots
-# fig, axs = plt.subplots(1, 3, figsize=(10, 5))
+# # Create a figure with custom GridSpec
+# fig = plt.figure(figsize=(12, 6))
+# gs = GridSpec(2, 3, figure=fig)
 
-# # Display the first image with a title
-# axs[0].imshow(image1_rgb)
-# axs[0].set_title('BL Filtered Image')
-# axs[0].axis('off')  # Hide the axis
+# # Display the first image with a larger area
+# ax1 = fig.add_subplot(gs[:, :2])  # Span 2 rows and 2 columns
+# ax1.imshow(image1_rgb)
+# ax1.set_title('BL Filtered Image')
+# ax1.axis('off')  # Hide the axis
 
-# # Display the second image with a title
-# axs[1].imshow(image2_rgb)
-# axs[1].set_title('Original No Flash Image')
-# axs[1].axis('off')  # Hide the axis
+# # Display the second and third images
+# ax2 = fig.add_subplot(gs[0, 2])  # Occupy top-right space
+# ax2.imshow(image2_rgb)
+# ax2.set_title('Original No Flash Image')
+# ax2.axis('off')  # Hide the axis
 
-# axs[2].imshow(image3_rgb)
-# axs[2].set_title('Original Flash Image')
-# axs[2].axis('off')  # Hide the axis
+# ax3 = fig.add_subplot(gs[1, 2])  # Occupy bottom-right space
+# ax3.imshow(image3_rgb)
+# ax3.set_title('Original Flash Image')
+# ax3.axis('off')  # Hide the axis
 
 # # Display the images
 # plt.show()
